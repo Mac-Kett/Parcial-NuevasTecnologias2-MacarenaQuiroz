@@ -1,0 +1,133 @@
+
+<section class="src-componentes-formulario">
+    <div class="jumbotron">
+
+      <h2>Alumnos</h2>
+      <hr>
+      <br>
+
+      <vue-form :state="formState" @submit.prevent="enviar()">
+
+        <!-- campo nombre -->
+        <validate tag="div">
+          <label for="nombre">Nombre</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            name="nombre" 
+            class="form-control"
+            autocomplete="off"
+            v-model.trim="formData.nombre"
+            required
+            :minlength="nombreLengthMin"
+            :maxlength="nombreLengthMax"
+            no-espacios
+          >
+          <!-- mensajes de validación -->
+          <field-messages name="nombre" show="$dirty">
+            <div slot="required" class="alert alert-danger mt-1">Campo requerido</div>            
+            <div slot="no-espacios" class="alert alert-danger mt-1">
+              No se permiten espacios intermedios en este campo
+            </div>            
+            <div slot="minlength" class="alert alert-danger mt-1">
+              Este campo requiere como mínimo {{ nombreLengthMin }} caracteres
+            </div>            
+            <div v-if="formData.nombre.length == nombreLengthMax" class="alert alert-warning mt-1">
+              Este campo debe tener como máximo {{ nombreLengthMax }} caracteres
+            </div>            
+          </field-messages>
+
+        </validate>
+        <br>
+
+        <!-- campo apellido -->
+        <validate tag="div">
+          <label for="apellido">Apellido</label>
+          <input 
+            type="text" 
+            id="apellido" 
+            name="apellido" 
+            class="form-control"
+            autocomplete="off"
+            v-model.trim="formData.apellido"
+            required
+            :minlength="nombreLengthMin"
+            :maxlength="nombreLengthMax"
+            no-espacios
+          >
+          <!-- mensajes de validación -->
+          <field-messages name="apellido" show="$dirty">
+            <div slot="required" class="alert alert-danger mt-1">Campo requerido</div> 
+            <div slot="no-espacios" class="alert alert-danger mt-1">
+              No se permiten espacios intermedios en este campo
+            </div>     
+            <div slot="minlength" class="alert alert-danger mt-1">
+              Este campo requiere como mínimo {{ nombreLengthMin }} caracteres
+            </div>            
+            <div v-if="formData.nombre.length == nombreLengthMax" class="alert alert-warning mt-1">
+              Este campo debe tener como máximo {{ nombreLengthMax }} caracteres
+            </div>                    
+          </field-messages>
+
+        </validate>
+        <br>
+
+        <!-- campo nota -->
+        <validate tag="div">
+          <label for="edad">Nota</label>
+          <input 
+            type="number" 
+            id="nota" 
+            name="nota" 
+            class="form-control"
+            autocomplete="off"
+            v-model.number="formData.nota"
+            required
+            :min="notaMin"
+            :max="notaMax"
+          >
+          <!-- mensajes de validación -->
+          <field-messages name="nota" show="$dirty">
+            <div slot="required" class="alert alert-danger mt-1">Campo requerido</div>            
+            <div slot="min" class="alert alert-danger mt-1">La nota mínima es de {{notaMin}} </div>            
+            <div slot="max" class="alert alert-danger mt-1">La nota máxima permitida es de {{notaMax}}</div>            
+          </field-messages>
+
+        </validate>
+        <br>
+
+        <button class="btn btn-success my-3" :disabled="formState.$invalid" type="submit">Enviar</button>
+
+      </vue-form>
+
+
+      <div v-if="alumnos.length" class="table-responsive">
+        <table class="table table-dark">
+          <tr>
+            <th>Nombre</th>
+            <th>Nota</th>
+          </tr>
+
+          <tr v-for="(a, index) in alumnos" :key="index">
+            <td>{{ a.nombre }} {{ a.apellido }}</td>
+            <td v-if="a.nota >= 0 && a.nota <= 3" style="color: red">{{ a.nota }}</td>
+            <td v-else-if="a.nota > 4 && a.nota <= 6" style="color: yellow">{{ a.nota }} </td>
+            <td v-else="a.nota > 7 && a.nota <= 10" style="color: green">{{ a.nota }}</td>
+  
+          </tr>
+          <td>
+          <tr v-if="promedioTotal >= 0 && promedioTotal <=3" style="color: red">Promedio Total: {{ promedioTotal }}</tr>
+          <tr v-else-if="promedioTotal > 4 && promedioTotal <=6" style="color: yellow">Promedio Total: {{ promedioTotal }}</tr>
+          <tr v-else="promedioTotal >= 7 && promedioTotal <=10" style="color: green">Promedio Total: {{ promedioTotal }}</tr>
+          </td>
+        </table>
+      </div>
+      <h4 class="alert alert-danger" v-else>No hay alumnos cargados aún</h4>
+    </div>
+
+
+
+    </div>
+  </div>
+</section>
+
